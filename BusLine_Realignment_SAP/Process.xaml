@@ -1,0 +1,1128 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="ProcessTransaction" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>750,1196</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="21">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="22">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Description: Decides which transaction needs to occur in SAP and conducts the operation accordingly and saves changes." DisplayName="ProcessTransaction" sap:VirtualizedContainerService.HintSize="710,1116" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <While DisplayName="While transaction code needs to be processed" sap:VirtualizedContainerService.HintSize="672,997" sap2010:WorkflowViewState.IdRef="While_1">
+      <While.Variables>
+        <Variable x:TypeArguments="x:Boolean" Default="True" Name="keepProcessing" />
+      </While.Variables>
+      <While.Condition>[keepProcessing]</While.Condition>
+      <Flowchart DisplayName="Deciding which transaction to perform" sap:VirtualizedContainerService.HintSize="630,839" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+        <Flowchart.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="profitNA" />
+        </Flowchart.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">0,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,75</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">60,40 90,40 90,47.5 120,47.5</av:PointCollection>
+            <x:Double x:Key="Height">803.232</x:Double>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Flowchart.StartNode>
+          <x:Reference>__ReferenceID10</x:Reference>
+        </Flowchart.StartNode>
+        <FlowStep x:Name="__ReferenceID0">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <av:Point x:Key="ShapeLocation">122,137</av:Point>
+              <av:Size x:Key="ShapeSize">216,66</av:Size>
+              <av:PointCollection x:Key="ConnectorLocation">230,203 230,464.5</av:PointCollection>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="KE52 Sequence" sap:VirtualizedContainerService.HintSize="986,3785" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Boolean" Name="activateButton" />
+              <Variable x:TypeArguments="x:Boolean" Name="notExist" />
+              <Variable x:TypeArguments="ui:GenericValue" Name="previousText" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Profit Center field" FormattedText="False" sap:VirtualizedContainerService.HintSize="948,134" sap2010:WorkflowViewState.IdRef="ClickText_4" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Profit Center">
+              <ui:ClickText.CursorPosition>
+                <ui:CursorPosition OffsetX="110" OffsetY="6" Position="TopRight" />
+              </ui:ClickText.CursorPosition>
+              <ui:ClickText.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="f3348b15f1d1d35f1a5ca2d815b53c88" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickText.Target>
+            </ui:ClickText>
+            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type operation code" EmptyField="True" sap:VirtualizedContainerService.HintSize="948,134" sap2010:WorkflowViewState.IdRef="TypeInto_5" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString + &quot;[k(enter)]&quot;]">
+              <ui:TypeInto.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="0cc74278aa3d77835e31232ca4ca9cbc" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:TypeInto.Target>
+            </ui:TypeInto>
+            <TryCatch DisplayName="Tries to find if Profit center does not exist" sap:VirtualizedContainerService.HintSize="948,818" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+              <TryCatch.Variables>
+                <Variable x:TypeArguments="ui:GenericValue" Name="busLineRequestFolder" />
+              </TryCatch.Variables>
+              <TryCatch.Try>
+                <Sequence DisplayName="Profit center exists?" sap:VirtualizedContainerService.HintSize="518,591" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:UiElementExists DisplayName="Checks for the 'Profit center # does not exist' text" Exists="[profitNA]" sap:VirtualizedContainerService.HintSize="480,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+                    <ui:UiElementExists.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="cd0288d53353f4c735a9e5e630144ca6" Selector="[&quot;&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd aaname='Profit center &quot;+in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString+&quot; does not exist in controlling area *' cls='Afx:*' /&gt;&quot;]" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+                    </ui:UiElementExists.Target>
+                  </ui:UiElementExists>
+                  <If Condition="[profitNA]" DisplayName="If Profit center does not exist" sap:VirtualizedContainerService.HintSize="480,353" sap2010:WorkflowViewState.IdRef="If_10">
+                    <If.Then>
+                      <Sequence DisplayName="Throw BusinessRuleException to be caught" sap:VirtualizedContainerService.HintSize="254,205" sap2010:WorkflowViewState.IdRef="Sequence_39">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="216,51" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+                          <ui:CommentOut.Body>
+                            <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="368,183" sap2010:WorkflowViewState.IdRef="Sequence_51">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="330,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Warn" Message="[&quot;Profit center &quot;+in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString+&quot; does not exist. Action required, please review.&quot;]" />
+                            </Sequence>
+                          </ui:CommentOut.Body>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </ui:CommentOut>
+                        <Throw DisplayName="Throw BusinessRuleException with message" Exception="[new BusinessRuleException(&quot;Profit center &quot;+in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString+&quot; does not exist. Action required, please review.&quot;)]" sap:VirtualizedContainerService.HintSize="216,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                      </Sequence>
+                    </If.Then>
+                  </If>
+                </Sequence>
+              </TryCatch.Try>
+              <TryCatch.Catches>
+                <Catch x:TypeArguments="ui:BusinessRuleException" sap:VirtualizedContainerService.HintSize="522,21" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ActivityAction x:TypeArguments="ui:BusinessRuleException">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="ui:BusinessRuleException" Name="exception" />
+                    </ActivityAction.Argument>
+                    <Sequence sap2010:Annotation.AnnotationText="This operation or profit center could cannot and should not continue to be processed if it does not exist." DisplayName="Ends processing while rethrowing the message" sap:VirtualizedContainerService.HintSize="296,271" sap2010:WorkflowViewState.IdRef="Sequence_41">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign sap:VirtualizedContainerService.HintSize="258,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[keepProcessing]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <Rethrow DisplayName="Rethrow BusinessRuleException" sap:VirtualizedContainerService.HintSize="258,22" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                    </Sequence>
+                  </ActivityAction>
+                </Catch>
+              </TryCatch.Catches>
+            </TryCatch>
+            <Sequence DisplayName="Copy Current Profit Group" sap:VirtualizedContainerService.HintSize="948,736" sap2010:WorkflowViewState.IdRef="Sequence_19">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Sequence DisplayName="Find relative image" sap:VirtualizedContainerService.HintSize="468,644" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" DisplayName="Attach Window SAP - Change Profit Center" sap:VirtualizedContainerService.HintSize="430,552" sap2010:WorkflowViewState.IdRef="WindowScope_2" InformativeScreenshot="7e87e37054c06729c28c534f28e339ca" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;">
+                  <ui:WindowScope.Body>
+                    <ActivityAction x:TypeArguments="x:Object">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Get current text within field" sap:VirtualizedContainerService.HintSize="368,406" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:WaitImageAppear FoundElement="{x:Null}" DisplayName="Find Image 'Profit Group'" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="WaitImageAppear_2">
+                          <ui:WaitImageAppear.Image>
+                            <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFsAAAASCAYAAAA0YaI9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAL2SURBVFhH7VdBktswDPO34v+svxN/xn7M5i27KkESIiUrnnSanGp0NGMjBEVCsrSdiuPnNwZxce/l1OyeBC7u/dw0Ii/uM1w1m+D7xb2fU7MJkv/O7WWZpjJhLPtJnOF/4eKCfKzlRoN0LGVLgUQWEz23L1O53R/GSd55XstD/t1vcxH6VAt83+dUx1TmFblCT4y0I67Pxw3Qx32aiwtSzV5kTxq0wNtavk/EwJF7ZuprZpkxttCGvXxpHaYX3xUj7Yg75itlW2IjESPtu7m4ILED3Wy+V/PxLA3fZcei8MrV3RImbBqT+B3aRQzLvAxfyFzMz68YK5rjgsDogR41y1ezel1HA5FvKl+bEwLL53GuZ1+6IODqPKkW96DW7Fp999+sjtC1teQLUieJghvzkawp2prHu2r3pUycuN+BXgh25jobzzlV6+Cc+etq40zPJpTTGqMOizPo+2k+QerLOMyR8m3WF1qJPhAnSO/4DXXI6aQ6ngpuQZ0zLkgvjGbj3K1nmyeu4n5iaYc7EmY3plbtwCwH35vmyNW4OIYql+qIuKRt8uWvI22i3MchHy56n7P2YWi08lx3uQ7T9Rvr+QWZxZ7MipaBJvLE3ojt/M7Uqh2YJdAYH/qFpAVv40JPNA07mnyYu8+XOdfXPryvyBd9HTzIWn+mX80iVe7kgmSQBvpEjfncHcrZzrajozO1agdmMR/iFPkLcUpgMaavxxM4b5IpmSu0cWZXzvuk2QcDGw+inmaRei10eZE8D2OJ5xdkDkzJjDs523pTkxaXJ8414DCHAM/866Fp2PU42ngu6kDN2SwfBJ4P+ZIRaqBuBGqtrzpH/oJVFxtBj1lqvUe2rHP6EUzg+fkFCc5xWDmBFc1jJy9StwOzVudwTZ9PtTYeKwxibh5PgjwnmkO+xiyPE5zlw/8BFKm2qs1zNIvOhbPfljVpc18YT3qLC1JA8uL+kntx0eOCTCRxcS9yoy9E0MfFBZlI4OLez8UFmciL+wRXyh8yehUQ6pEITwAAAABJRU5ErkJggg==" />
+                          </ui:WaitImageAppear.Image>
+                          <ui:WaitImageAppear.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:WaitImageAppear.Target>
+                        </ui:WaitImageAppear>
+                        <ui:SetClippingRegion Element="{x:Null}" Region="{x:Null}" Direction="TRANSLATE" DisplayName="Translate clipping region" sap:VirtualizedContainerService.HintSize="330,22" sap2010:WorkflowViewState.IdRef="SetClippingRegion_2">
+                          <ui:SetClippingRegion.Size>
+                            <ui:Region Rectangle="-181, 1, 348, 0" />
+                          </ui:SetClippingRegion.Size>
+                        </ui:SetClippingRegion>
+                        <ui:GetVisibleText WordsInfo="{x:Null}" DisplayName="Get Visible Text with 'Profit Group' field" FormattedText="False" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="GetVisibleText_2">
+                          <ui:GetVisibleText.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="dcf8adfe8f855d68041fa3dc67d955a0" WaitForReady="INTERACTIVE" />
+                          </ui:GetVisibleText.Target>
+                          <ui:GetVisibleText.Text>
+                            <OutArgument x:TypeArguments="ui:GenericValue">[previousText]</OutArgument>
+                          </ui:GetVisibleText.Text>
+                        </ui:GetVisibleText>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:WindowScope.Body>
+                </ui:WindowScope>
+              </Sequence>
+            </Sequence>
+            <If sap2010:Annotation.AnnotationText="If the current profit group is the same as the profit group that is indicated as the updated group, there is no need to change this information. Bot will choose to do nothing if information is the same. Else it will update and save the information to the updated profit group." Condition="[previousText.Contains(in_TransactionItem.SpecificContent(&quot;NewProfile Update&quot;).ToString)]" DisplayName="If current is same as updated" sap:VirtualizedContainerService.HintSize="948,1711" sap2010:WorkflowViewState.IdRef="If_4">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <ui:Comment sap:VirtualizedContainerService.HintSize="330,55" sap2010:WorkflowViewState.IdRef="Comment_1" Text="// Do nothing" />
+              </If.Then>
+              <If.Else>
+                <Sequence DisplayName="Update Profit Ctr Group" sap:VirtualizedContainerService.HintSize="577,1521" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Profit Ctr Group field" FormattedText="False" sap:VirtualizedContainerService.HintSize="539,134" sap2010:WorkflowViewState.IdRef="ClickText_5" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Profit Ctr Group">
+                    <ui:ClickText.CursorPosition>
+                      <ui:CursorPosition OffsetX="111" OffsetY="7" Position="TopRight" />
+                    </ui:ClickText.CursorPosition>
+                    <ui:ClickText.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="1311bb8f616a32cf3c3a988bd25ac09a" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:ClickText.Target>
+                  </ui:ClickText>
+                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type New Profit Group" EmptyField="True" sap:VirtualizedContainerService.HintSize="539,134" sap2010:WorkflowViewState.IdRef="TypeInto_21" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;NewProfile Update&quot;).ToString + &quot;[k(enter)]&quot;]">
+                    <ui:TypeInto.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="2902082c2f336f7c864b7a0e0c9b0e69" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:TypeInto.Target>
+                  </ui:TypeInto>
+                  <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click to confirm" FormattedText="False" sap:VirtualizedContainerService.HintSize="539,134" sap2010:WorkflowViewState.IdRef="ClickText_6" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Changes to the hierarchy">
+                    <ui:ClickText.CursorPosition>
+                      <ui:CursorPosition OffsetX="201" OffsetY="110" Position="TopRight" />
+                    </ui:ClickText.CursorPosition>
+                    <ui:ClickText.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="4dbb5a63ab10929371cfd6aa5d0bfefd" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='Information' /&gt;&lt;wnd ctrlid='101' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:ClickText.Target>
+                  </ui:ClickText>
+                  <ui:TextExists DisplayName="Text Exists 'Profit center group' does not exist" FormattedText="False" sap:VirtualizedContainerService.HintSize="539,134" sap2010:WorkflowViewState.IdRef="TextExists_1" Occurrence="1" Result="[notExist]" Text="Profit center group">
+                    <ui:TextExists.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="12703df8ed3479c00908abaf034fdeb4" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd aaname='Profit center group * does not exist' cls='Afx:*' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                    </ui:TextExists.Target>
+                  </ui:TextExists>
+                  <If Condition="[notExist]" DisplayName="If profit center group does not exist" sap:VirtualizedContainerService.HintSize="539,51" sap2010:WorkflowViewState.IdRef="If_3">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <Sequence sap:VirtualizedContainerService.HintSize="336,836" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="314,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[&quot;Profit center group &quot; + in_TransactionItem.SpecificContent(&quot;NewProfile Update&quot;).ToString + &quot; does not exist. Action needed&quot;]" />
+                        <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" Buttons="Ok" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="MessageBox_5" Text="[&quot;Profit Ctr Group will be reverted to the most recent valid profit ctr group that was entered in this field:&quot; + Environment.NewLine + previousText]" TopMost="True" />
+                        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Profit" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_20" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Profit Ctr Group">
+                          <ui:ClickText.CursorPosition>
+                            <ui:CursorPosition OffsetX="111" OffsetY="7" Position="TopRight" />
+                          </ui:ClickText.CursorPosition>
+                          <ui:ClickText.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="1311bb8f616a32cf3c3a988bd25ac09a" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:ClickText.Target>
+                        </ui:ClickText>
+                        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type previous text" EmptyField="True" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="TypeInto_6" SendWindowMessages="False" SimulateType="False" Text="[previousText + &quot;[k(enter)]&quot;]">
+                          <ui:TypeInto.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="2902082c2f336f7c864b7a0e0c9b0e69" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:TypeInto.Target>
+                        </ui:TypeInto>
+                        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click to confirm" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_22" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Changes to the hierarchy">
+                          <ui:ClickText.CursorPosition>
+                            <ui:CursorPosition OffsetX="201" OffsetY="110" Position="TopRight" />
+                          </ui:ClickText.CursorPosition>
+                          <ui:ClickText.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="4dbb5a63ab10929371cfd6aa5d0bfefd" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='Information' /&gt;&lt;wnd ctrlid='101' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:ClickText.Target>
+                        </ui:ClickText>
+                      </Sequence>
+                    </If.Then>
+                  </If>
+                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Confirm change" EmptyField="False" sap:VirtualizedContainerService.HintSize="539,154" sap2010:WorkflowViewState.IdRef="SendHotkey_4" Key="enter" KeyModifiers="None" SendWindowMessages="False" SpecialKey="True">
+                    <ui:SendHotkey.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="d5b255c93d50a85257d890edd32255ba" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:SendHotkey.Target>
+                  </ui:SendHotkey>
+                  <ui:ImageFound DisplayName="Image Exists 'saplogon.exe Change'" Found="[activateButton]" sap:VirtualizedContainerService.HintSize="539,106" sap2010:WorkflowViewState.IdRef="ImageFound_2">
+                    <ui:ImageFound.Image>
+                      <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD4SURBVEhL1ZI9DoIwGIa5BjfxPiaMnKG7oxtXYKKL8QIsdUMSR8NqTIzG2E6vlIKA/TBWMNHhGb6fPG3e1lNK4Vv8qjzBJZ7jRs4MDvIc8titbbncJ5Cd+m25zGY4xR4u+6bXl9tz11iOpTBd9G5nyHEr+88R/eaDHkIf2+WOnDV8JNfijW9oD8hxXXtV7ucsr3ru8lX4EBtCHKi9Egd5Ac4YeGHqCWPR4gBBoGkPaKkjSZNe/w15V1zDOAprzxzg8M9tMeMFsUfzQk7cOBLE3jAD8vFiDSkX0XixxpJPJdY8yQUE52ATiDV05iIaLdYMPOg0/Ktc4Q4Vo7ffuW3U5AAAAABJRU5ErkJggg==" />
+                    </ui:ImageFound.Image>
+                    <ui:ImageFound.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;" TimeoutMS="500" WaitForReady="INTERACTIVE" />
+                    </ui:ImageFound.Target>
+                  </ui:ImageFound>
+                  <If Condition="[activateButton]" sap:VirtualizedContainerService.HintSize="539,302" sap2010:WorkflowViewState.IdRef="If_2">
+                    <If.Then>
+                      <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Activate update" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_10" Key="f1" KeyModifiers="Shift" SendWindowMessages="False" SpecialKey="True">
+                        <ui:SendHotkey.Target>
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="9d7401ab11a3168a20f50bd479770abc" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                        </ui:SendHotkey.Target>
+                      </ui:SendHotkey>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence DisplayName="Enter and activate again" sap:VirtualizedContainerService.HintSize="336,472" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Confirm change" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_16" Key="enter" KeyModifiers="None" SendWindowMessages="False" SpecialKey="True">
+                          <ui:SendHotkey.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="d5b255c93d50a85257d890edd32255ba" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:SendHotkey.Target>
+                        </ui:SendHotkey>
+                        <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Activate update" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_17" Key="f1" KeyModifiers="Shift" SendWindowMessages="False" SpecialKey="True">
+                          <ui:SendHotkey.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="9d7401ab11a3168a20f50bd479770abc" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Profit Center' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:SendHotkey.Target>
+                        </ui:SendHotkey>
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <FlowStep.Next>
+            <FlowStep x:Name="__ReferenceID1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <av:Point x:Key="ShapeLocation">122,464.5</av:Point>
+                  <av:Size x:Key="ShapeSize">216,51</av:Size>
+                  <av:PointCollection x:Key="ConnectorLocation">230,515.5 230,560</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Go Back to Easy Access Page" EmptyField="False" sap:VirtualizedContainerService.HintSize="216,51" sap2010:WorkflowViewState.IdRef="SendHotkey_19" Key="f3" KeyModifiers="Shift" SendWindowMessages="False" SpecialKey="True">
+                <ui:SendHotkey.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="b8a6ac1cc94ecdb67a8be78634daa2c8" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' omit:title='Change Profit Center' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:SendHotkey.Target>
+              </ui:SendHotkey>
+              <FlowStep.Next>
+                <FlowStep x:Name="__ReferenceID9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <av:Point x:Key="ShapeLocation">101,560</av:Point>
+                      <av:Size x:Key="ShapeSize">258,60</av:Size>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign sap:VirtualizedContainerService.HintSize="258,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[keepProcessing]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                </FlowStep>
+              </FlowStep.Next>
+            </FlowStep>
+          </FlowStep.Next>
+        </FlowStep>
+        <FlowDecision x:Name="__ReferenceID8" Condition="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString.Contains(&quot;KE52&quot;)]" DisplayName="KE52?" sap:VirtualizedContainerService.HintSize="70,87" sap2010:WorkflowViewState.IdRef="FlowDecision_2" True="{x:Reference __ReferenceID0}">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <av:Point x:Key="ShapeLocation">355,66.5</av:Point>
+              <av:Size x:Key="ShapeSize">70,87</av:Size>
+              <av:PointCollection x:Key="TrueConnector">355,110 92,110 92,170 122,170</av:PointCollection>
+              <av:PointCollection x:Key="FalseConnector">425,110 440,110 440,146.5</av:PointCollection>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <FlowDecision.False>
+            <FlowDecision x:Name="__ReferenceID2" Condition="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString.Contains(&quot;KS02&quot;)]" DisplayName="KS02?" sap:VirtualizedContainerService.HintSize="70,87" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <av:Point x:Key="ShapeLocation">405,146.5</av:Point>
+                  <av:Size x:Key="ShapeSize">70,87</av:Size>
+                  <av:PointCollection x:Key="TrueConnector">405,190 375,190 375,250 338,250</av:PointCollection>
+                  <av:PointCollection x:Key="FalseConnector">475,190 490,190 490,226.5</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <FlowDecision.True>
+                <FlowStep x:Name="__ReferenceID3">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <av:Point x:Key="ShapeLocation">122,217</av:Point>
+                      <av:Size x:Key="ShapeSize">216,66</av:Size>
+                      <av:PointCollection x:Key="ConnectorLocation">122,250 92,250 92,490 122,490</av:PointCollection>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Sequence DisplayName="KS02 Sequence" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="ui:GenericValue" Name="previousText" />
+                      <Variable x:TypeArguments="x:Boolean" Name="costCenterNotExist" />
+                    </Sequence.Variables>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Cost Center field" FormattedText="False" sap:VirtualizedContainerService.HintSize="587,134" sap2010:WorkflowViewState.IdRef="ClickText_7" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Cost Center">
+                      <ui:ClickText.CursorPosition>
+                        <ui:CursorPosition OffsetX="123" OffsetY="5" Position="TopRight" />
+                      </ui:ClickText.CursorPosition>
+                      <ui:ClickText.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="86dab46e7868c9d034852e9e87a013c8" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Initial Screen' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                      </ui:ClickText.Target>
+                    </ui:ClickText>
+                    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type operation #" EmptyField="True" sap:VirtualizedContainerService.HintSize="587,134" sap2010:WorkflowViewState.IdRef="TypeInto_7" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString + &quot;[k(enter)]&quot;]">
+                      <ui:TypeInto.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="228e2417e40af50748b30cdacbab674a" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Initial Screen' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                      </ui:TypeInto.Target>
+                    </ui:TypeInto>
+                    <TryCatch DisplayName="Tries to find if Cost center does not exist" sap:VirtualizedContainerService.HintSize="587,502" sap2010:WorkflowViewState.IdRef="TryCatch_5">
+                      <TryCatch.Variables>
+                        <Variable x:TypeArguments="ui:GenericValue" Name="busLineRequestFolder" />
+                      </TryCatch.Variables>
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <TryCatch.Try>
+                        <Sequence DisplayName="Cost center exists?" sap:VirtualizedContainerService.HintSize="518,443" sap2010:WorkflowViewState.IdRef="Sequence_43">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:UiElementExists DisplayName="Checks for 'Cost center # does not exist' text" Exists="[profitNA]" sap:VirtualizedContainerService.HintSize="480,106" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
+                            <ui:UiElementExists.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="acf1c7fe290505b8a220ee9edc7335d6" Selector="[&quot;&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Initial Screen' /&gt;&lt;wnd aaname='Cost center &quot;+in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString+&quot; does not exist' cls='Afx:*' /&gt;&quot;]" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+                            </ui:UiElementExists.Target>
+                          </ui:UiElementExists>
+                          <If Condition="[profitNA]" DisplayName="If Profit center does not exist" sap:VirtualizedContainerService.HintSize="480,208" sap2010:WorkflowViewState.IdRef="If_11">
+                            <If.Then>
+                              <Throw DisplayName="Throw BusinessRuleException with message" Exception="[new BusinessRuleException(&quot;Profit center &quot;+in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString+&quot; does not exist. Action required, please review.&quot;)]" sap:VirtualizedContainerService.HintSize="216,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
+                            </If.Then>
+                          </If>
+                        </Sequence>
+                      </TryCatch.Try>
+                      <TryCatch.Catches>
+                        <Catch x:TypeArguments="ui:BusinessRuleException" sap:VirtualizedContainerService.HintSize="400,340" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ActivityAction x:TypeArguments="ui:BusinessRuleException">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="ui:BusinessRuleException" Name="exception" />
+                            </ActivityAction.Argument>
+                            <Sequence sap2010:Annotation.AnnotationText="This operation or profit center could cannot and should not continue to be processed if it does not exist." DisplayName="Ends processing while rethrowing the message" sap:VirtualizedContainerService.HintSize="296,271" sap2010:WorkflowViewState.IdRef="Sequence_58">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <Assign sap:VirtualizedContainerService.HintSize="258,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Boolean">[keepProcessing]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Rethrow DisplayName="Rethrow BusinessRuleException" sap:VirtualizedContainerService.HintSize="258,22" sap2010:WorkflowViewState.IdRef="Rethrow_2" />
+                            </Sequence>
+                          </ActivityAction>
+                        </Catch>
+                      </TryCatch.Catches>
+                    </TryCatch>
+                    <Sequence DisplayName="Get previous cost center category" sap:VirtualizedContainerService.HintSize="587,66" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" DisplayName="Attach Window 'Change Cost Center: Basic Screen'" sap:VirtualizedContainerService.HintSize="436,644" sap2010:WorkflowViewState.IdRef="WindowScope_3" InformativeScreenshot="7725bd3abc0c0c7fa537103225eb4683" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Basic Screen' /&gt;">
+                        <ui:WindowScope.Body>
+                          <ActivityAction x:TypeArguments="x:Object">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Save previous text" sap:VirtualizedContainerService.HintSize="406,498" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <Sequence DisplayName="Find relative image" sap:VirtualizedContainerService.HintSize="368,260" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <ui:WaitImageAppear FoundElement="{x:Null}" DisplayName="Find Image 'Cost Center Category'" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="WaitImageAppear_3">
+                                  <ui:WaitImageAppear.Image>
+                                    <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAHkAAAATCAYAAAC0laJ1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOySURBVGhD7VhRktswCPW14vusr5NcJj5McpatygOeBLLs5Kfdaeo3o5nVMwIECGkzff8qFfibgzi5f5+bnEskcXKfwWmSexI4uc/htF335Ml9FleTTHB+cp/DnQ+v/4BLD6/HdS7TNNVxuT6rIMH5Pvcst3kusvSFnEjesr35JosEvRzwmnvfLvAu18cEPo7kbP4s18tcfBsHcn+Xqw8v28xSVqXBreXrciuPg8XAlrONMthEL2cJXsq9cmtZZrMX5QDOj7n37ALvcowJfDS0mIzXWqEhyY1zIcFPcX4ni/PTQQU+b+VSqznL3ZdY5asEus11DBNn9vYTgmBRR5ATP2bRd6026QsSTM5HtRu/hZPuum6qKxabgTGBPEH/xh0v+uxDCsKWZx9ynGEnrOn32/EK5EN0Wxxm2cdUFjmd9O/7vuj+IY65JVmV2SmugjIM5uDX3bnVFGgAoaxuRBLsm33ZsuBkOiFZbhXna1uMNnTdji87dlGE9RpwXZBnAKlL9Tl07j62znYkF4stJMkBH3j1bX2O11QsLCua6l9MXIiDAjolyyonA/GLSbeHVzJsg1CFDIwinMKuYmy80bJScfRy0rbDycLGFw/ixpcwH9s1Xa14zXeNaVqr2hR17XBvJgM0LtptSSbMZtfyGT/xIR+uI/8sDlyHbzSTbfTx48MLSQ4fCBXaJMSqz6oot6jGuTMjfdSZNmdDgQ24vjZ2NhcCMbQr31u7a7qGBSNIvnQxUc6Bv3PLpt1BNznYz/ZwhYL2uDf/WtyhE1cNVNA3dix964RTDfjDq1UXQSFVmBISqi3I6abVcKtm8ATljAtVWTlDrkpDXdtvzhNlrozsNl3ZRr/WuSTXYrJZG4o0232nm9hQuA+7p7XawPeQI49DKw5yizwMtz7XH0Pi69o4UapBsNM6uhse16UpDPcCqqreFwLT53KOo5drukd17nL95nwOSZPb2uV9SFDXpmB8EPg7xsQ48/EOHpceONGDO5kmcB/WWLk+cPHf0VV8sDgjccHnoMsKJtytsaNCLhUHYCc9n377XpMM9P+3+j58I+RDIWhFN54nRgNIfuOMy8jILa8FBw6nlyod6TcHO33SuabKbXUN14JzcI7Rx8QSghPn3MVOT+1s8JHfahF5Asi7DzpiDEVPepBGXbHYwA+SuXe47OHlIHlyP8R58rxe9uWGHLpC7DptpF+8OIiT+/McWnk9yTtJIo447Yre8Xq5+otXJIGT+xyu3smRPLlP4kr5DbR0Z+wf09PwAAAAAElFTkSuQmCC" />
+                                  </ui:WaitImageAppear.Image>
+                                  <ui:WaitImageAppear.Target>
+                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Basic Screen' /&gt;" WaitForReady="INTERACTIVE" />
+                                  </ui:WaitImageAppear.Target>
+                                </ui:WaitImageAppear>
+                                <ui:SetClippingRegion Element="{x:Null}" Region="{x:Null}" Direction="TRANSLATE" DisplayName="Translate clipping region" sap:VirtualizedContainerService.HintSize="330,22" sap2010:WorkflowViewState.IdRef="SetClippingRegion_3">
+                                  <ui:SetClippingRegion.Size>
+                                    <ui:Region Rectangle="-179, 2, 253, 0" />
+                                  </ui:SetClippingRegion.Size>
+                                </ui:SetClippingRegion>
+                              </Sequence>
+                              <ui:GetVisibleText WordsInfo="{x:Null}" DisplayName="Get Visible Text of current cost center category" FormattedText="False" sap:VirtualizedContainerService.HintSize="368,106" sap2010:WorkflowViewState.IdRef="GetVisibleText_3">
+                                <ui:GetVisibleText.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="a2893fab3488489b4084c309f4846be4" WaitForReady="INTERACTIVE" />
+                                </ui:GetVisibleText.Target>
+                                <ui:GetVisibleText.Text>
+                                  <OutArgument x:TypeArguments="ui:GenericValue">[previousText]</OutArgument>
+                                </ui:GetVisibleText.Text>
+                              </ui:GetVisibleText>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:WindowScope.Body>
+                      </ui:WindowScope>
+                    </Sequence>
+                    <If sap2010:Annotation.AnnotationText="If the current cost center category is the same as the cost center category that is indicated as the updated version, there is no need to change this information. Bot will choose to do nothing if information is the same. Else it will update and save the information to the updated cost center category." Condition="[previousText.Contains(in_TransactionItem.SpecificContent(&quot;KS02_CC_Category&quot;).ToString)]" DisplayName="If current is same as updated" sap:VirtualizedContainerService.HintSize="587,286" sap2010:WorkflowViewState.IdRef="If_5">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <ui:Comment sap:VirtualizedContainerService.HintSize="330,55" sap2010:WorkflowViewState.IdRef="Comment_2" Text="// Do nothing" />
+                      </If.Then>
+                      <If.Else>
+                        <Sequence DisplayName="Update Cost Center Category" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_27">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Cost Center Category" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_8" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Cost Center Category">
+                            <ui:ClickText.CursorPosition>
+                              <ui:CursorPosition OffsetX="68" OffsetY="8" Position="TopRight" />
+                            </ui:ClickText.CursorPosition>
+                            <ui:ClickText.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="78a4e1c6326782b080100dad2136fd5f" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Basic Screen' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                            </ui:ClickText.Target>
+                          </ui:ClickText>
+                          <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Cost Center Category" EmptyField="True" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="TypeInto_8" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;KS02_CC_Category&quot;).ToString + &quot;[k(enter)]&quot;]">
+                            <ui:TypeInto.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="098df57e74fdb3bb1401ad106f6b9f8e" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Basic Screen' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                            </ui:TypeInto.Target>
+                          </ui:TypeInto>
+                          <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Save" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_7" Key="s" KeyModifiers="Ctrl" SendWindowMessages="False" SpecialKey="False">
+                            <ui:SendHotkey.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="7c9ec864962d5f2bd82b408869edebe6" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change Cost Center: Basic Screen' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                            </ui:SendHotkey.Target>
+                          </ui:SendHotkey>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                  </Sequence>
+                  <FlowStep.Next>
+                    <x:Reference>__ReferenceID1</x:Reference>
+                  </FlowStep.Next>
+                </FlowStep>
+              </FlowDecision.True>
+              <FlowDecision.False>
+                <FlowDecision x:Name="__ReferenceID4" Condition="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString.Contains(&quot;ZSOP&quot;)]" DisplayName="ZSOP?" sap:VirtualizedContainerService.HintSize="70,87" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <av:Point x:Key="ShapeLocation">455,226.5</av:Point>
+                      <av:Size x:Key="ShapeSize">70,87</av:Size>
+                      <av:PointCollection x:Key="TrueConnector">455,270 425,270 425,330 338,330</av:PointCollection>
+                      <av:PointCollection x:Key="FalseConnector">525,270 550,270 550,306.5</av:PointCollection>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <FlowDecision.True>
+                    <FlowStep x:Name="__ReferenceID5">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <av:Point x:Key="ShapeLocation">122,297</av:Point>
+                          <av:Size x:Key="ShapeSize">216,66</av:Size>
+                          <av:PointCollection x:Key="ConnectorLocation">122,330 92,330 92,490 122,490</av:PointCollection>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Sequence DisplayName="ZSOP Sequence" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="ui:GenericValue" Name="previousText" />
+                        </Sequence.Variables>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Postion button" FormattedText="False" sap:VirtualizedContainerService.HintSize="430,134" sap2010:WorkflowViewState.IdRef="ClickText_12" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Position...">
+                          <ui:ClickText.CursorPosition>
+                            <ui:CursorPosition OffsetX="0" OffsetY="0" Position="Center" />
+                          </ui:ClickText.CursorPosition>
+                          <ui:ClickText.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e98ec7f7a627a5fce6f8e8e9b70b90db" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Overview' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:ClickText.Target>
+                        </ui:ClickText>
+                        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Operation code" EmptyField="True" sap:VirtualizedContainerService.HintSize="430,134" sap2010:WorkflowViewState.IdRef="TypeInto_16" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString + &quot;[k(enter)]&quot;]">
+                          <ui:TypeInto.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="3ba55075449e1403852cbd7107a98e74" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='Another entry' /&gt;&lt;wnd ctrlid='101' /&gt;" WaitForReady="INTERACTIVE" />
+                          </ui:TypeInto.Target>
+                        </ui:TypeInto>
+                        <TryCatch DisplayName="Try to click on operation code to process" sap:VirtualizedContainerService.HintSize="430,183" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <TryCatch.Try>
+                            <Sequence DisplayName="Find, Edit, and Save operation" sap:VirtualizedContainerService.HintSize="577,66" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_DOUBLE" DisplayName="Click operation" FormattedText="False" sap:VirtualizedContainerService.HintSize="539,134" sap2010:WorkflowViewState.IdRef="ClickText_13" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString]">
+                                <ui:ClickText.CursorPosition>
+                                  <ui:CursorPosition OffsetX="0" OffsetY="0" Position="Center" />
+                                </ui:ClickText.CursorPosition>
+                                <ui:ClickText.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="ce3205b61c383bd640d39a3c228895fe" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Overview' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+                                </ui:ClickText.Target>
+                              </ui:ClickText>
+                              <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" DisplayName="Attach Window 'Change View &quot;Operations Master&quot;: Details'" sap:VirtualizedContainerService.HintSize="539,197" sap2010:WorkflowViewState.IdRef="WindowScope_4" InformativeScreenshot="d6ebb1206822ff1d42706d81069ea2d0" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Details' /&gt;">
+                                <ui:WindowScope.Body>
+                                  <ActivityAction x:TypeArguments="x:Object">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+                                    </ActivityAction.Argument>
+                                    <Sequence DisplayName="Get Previous Text" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <Sequence DisplayName="Find relative image" sap:VirtualizedContainerService.HintSize="336,292" sap2010:WorkflowViewState.IdRef="Sequence_30">
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                        <ui:WaitImageAppear FoundElement="{x:Null}" DisplayName="Find Image 'Subsidy Calc Req.'" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="WaitImageAppear_5">
+                                          <ui:WaitImageAppear.Image>
+                                            <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAGEAAAARCAYAAADNJMJiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPYSURBVFhH7VY7TiNBEJ1DWRaau7ASyJqLOEICybdwhkTiM0AIAYlPYFJI2KT3vddVPdXj8YddrRGSn9TIU/3q0/XppknA28fvshxn2elkza6Ns+x0slIEh3+fZaeTqQiOuOHYK3u5S227SOsoG+MdksHOZHqXng7x/lVmfhhvkY3xTizTm0C8vdymSdOkxheS+/TxCWJeDv+WbL1QEQ7yDPIxvRXfIY7J++QcaQ+/n24u+pixJjevozwt+OmbZtxeJcP5qpxgdasjdYFjZfYwP6RfcPDrvt9YXs/S8pABBmlJ3csD9sq+mhyAv3MBZgl5MRnOMVZk1/2bpoF95kFYdfJ3MC/AV2S4jiA0Z/1hAnkYeEwY9XDo+bV3SpvmL73uqus7SB061LU9Lfl4TfNp3Qxv97PUjCaWjXORFjY+7pNrvWh7u1j0LVRN85oWbfA/5mMrL9knz5ixVrzZxjCW3NhD+9xzeLzNBn82UOhAbGElf+clWOCPLrOi6NsSyRElHtmZxlXXOA/250xE0c3JvvRkRx9MuhmkvyUKXHhAiY8FbTolqMiwHDWvVYIUr/lRg8DPYd3eh5/Pcq3YWGDpVufN5/O8RL+O4gNLRRCYiFC5nQZiwhgkHDMoGSTXO4dBOW+oG3lA7WOFhug08izeZeSZLdmrDh18ABUP0S3aPKHuZ1352KPLpgk5aa4fjEVejq1cVbB5aVOivMQGKX4zKh9AeZirDd19w8CNFxPGIKtEcKLcee6GWNSiy24fFi/48A5T54WpKPERijEnocgA50i3JDAkh37VcLt1iyzwZG+r4frzRT9bDeJ+XdeWQ0XYvENoKyPfdbwGNs+hquTguyTMO9t11TnoMPt2e7qjyXNdL57z6MODtO/JdJY6dLCuEedhOTbv7EQc+jnKjMcil5jZDMZzv7TP5Fb2RnxUPE6UXT/ihYYb6nrxXDY8r/MA/m4kRNDl8QKy8xA4pwK/yV1eoeKeMCUrF4HQPXv1IN7jzaw8VEoK5eDnZNvomk0VqQrSHs09gXPlbo+JQGEQz4r2eN9TZmdRLEyO4rUp9Skze1yOXjdchzEvAM/bF4XvjMfCBglvmV/NhVefLRdBVcVGHCtzRMTR7hahqgoq6AVHclz2rJtiR6hb836L4KuJAhioJjHICP922fA/oZxXFtlkcaIYr/mBZv3fEZrEUXyAX90CWHXh6yu3FJ4rnK/BJG41aziviuAoBr5dxiSGcTZs836IzIpvF8MWr3+YBxvEd8nUbXatOcZ4P0bGicINoCt8hLfjYT7LiFPJ7E04jnyW/Q/ZZ/oDrAxrPmUJnpcAAAAASUVORK5CYII=" />
+                                          </ui:WaitImageAppear.Image>
+                                          <ui:WaitImageAppear.Target>
+                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Details' /&gt;" WaitForReady="INTERACTIVE" />
+                                          </ui:WaitImageAppear.Target>
+                                        </ui:WaitImageAppear>
+                                        <ui:SetClippingRegion Element="{x:Null}" Region="{x:Null}" Direction="TRANSLATE" DisplayName="Translate clipping region" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="SetClippingRegion_5">
+                                          <ui:SetClippingRegion.Size>
+                                            <ui:Region Rectangle="-235, 4, 389, -2" />
+                                          </ui:SetClippingRegion.Size>
+                                        </ui:SetClippingRegion>
+                                      </Sequence>
+                                      <ui:GetVisibleText WordsInfo="{x:Null}" DisplayName="Get Visible Text of current Subsidy Calc Req." FormattedText="False" sap:VirtualizedContainerService.HintSize="336,106" sap2010:WorkflowViewState.IdRef="GetVisibleText_5">
+                                        <ui:GetVisibleText.Target>
+                                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="b311c98766ad84721d6aabbd97fee992" WaitForReady="INTERACTIVE" />
+                                        </ui:GetVisibleText.Target>
+                                        <ui:GetVisibleText.Text>
+                                          <OutArgument x:TypeArguments="ui:GenericValue">[previousText]</OutArgument>
+                                        </ui:GetVisibleText.Text>
+                                      </ui:GetVisibleText>
+                                    </Sequence>
+                                  </ActivityAction>
+                                </ui:WindowScope.Body>
+                              </ui:WindowScope>
+                              <If sap2010:Annotation.AnnotationText="If the current subsidy calc req. is the same as the profit group that is indicated as the updated req., there is no need to change this information. Bot will choose to do nothing if information is the same. Else it will update and save the information to the updated subsidy calc req." Condition="[in_TransactionItem.SpecificContent(&quot;ZSOP_Sub_Calc&quot;).ToString.Trim.ToUpper.Contains(previousText.Trim.ToUpper)]" DisplayName="If current is same as updated" sap:VirtualizedContainerService.HintSize="539,265" sap2010:WorkflowViewState.IdRef="If_6">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <If.Then>
+                                  <ui:Comment sap:VirtualizedContainerService.HintSize="314,55" sap2010:WorkflowViewState.IdRef="Comment_3" Text="// Do nothing" />
+                                </If.Then>
+                                <If.Else>
+                                  <Sequence DisplayName="Update and Save" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="Sequence_32">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Text field &quot;Subsidy Calc Req&quot;" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_14" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Subsidy Calc Req.">
+                                      <ui:ClickText.CursorPosition>
+                                        <ui:CursorPosition OffsetX="147" OffsetY="6" Position="TopRight" />
+                                      </ui:ClickText.CursorPosition>
+                                      <ui:ClickText.Target>
+                                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="ce8ada9a38b5c3348367161f4064f3f7" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                      </ui:ClickText.Target>
+                                    </ui:ClickText>
+                                    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Subsidy Calc Req" EmptyField="True" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="TypeInto_17" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;ZSOP_Sub_Calc&quot;).ToString + &quot;[k(enter)]&quot;]">
+                                      <ui:TypeInto.Target>
+                                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="88214b3f0ff6ef6f70e6d11f9b0894e3" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                      </ui:TypeInto.Target>
+                                    </ui:TypeInto>
+                                    <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Save" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_14" Key="s" KeyModifiers="Ctrl" SendWindowMessages="False" SpecialKey="False">
+                                      <ui:SendHotkey.Target>
+                                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e77ca053468a39236fa61a61e07141bf" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;Operations Master&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                      </ui:SendHotkey.Target>
+                                    </ui:SendHotkey>
+                                  </Sequence>
+                                </If.Else>
+                              </If>
+                            </Sequence>
+                          </TryCatch.Try>
+                          <TryCatch.Catches>
+                            <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ActivityAction x:TypeArguments="s:Exception">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                </ActivityAction.Argument>
+                                <Sequence sap2010:Annotation.AnnotationText="This operation or profit center could cannot and should not continue to be processed if it does not exist." DisplayName="Stop processing" sap:VirtualizedContainerService.HintSize="296,271" sap2010:WorkflowViewState.IdRef="Sequence_59">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <Assign sap:VirtualizedContainerService.HintSize="258,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Boolean">[keepProcessing]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <Throw DisplayName="Throw BusinessRuleException" Exception="[new BusinessRuleException(&quot;Operation not found for transaction &quot; + in_TransactionItem.Reference +&quot;. Action Required.&quot;)]" sap:VirtualizedContainerService.HintSize="258,22" sap2010:WorkflowViewState.IdRef="Throw_10" />
+                                </Sequence>
+                              </ActivityAction>
+                            </Catch>
+                          </TryCatch.Catches>
+                        </TryCatch>
+                      </Sequence>
+                      <FlowStep.Next>
+                        <x:Reference>__ReferenceID1</x:Reference>
+                      </FlowStep.Next>
+                    </FlowStep>
+                  </FlowDecision.True>
+                  <FlowDecision.False>
+                    <FlowDecision x:Name="__ReferenceID6" Condition="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString.Contains(&quot;ZROP&quot;)]" DisplayName="ZROP?" sap:VirtualizedContainerService.HintSize="70,87" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <av:Point x:Key="ShapeLocation">515,306.5</av:Point>
+                          <av:Size x:Key="ShapeSize">70,87</av:Size>
+                          <av:PointCollection x:Key="TrueConnector">515,350 485,350 485,410 338,410</av:PointCollection>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <FlowDecision.True>
+                        <FlowStep x:Name="__ReferenceID7">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <av:Point x:Key="ShapeLocation">122,377</av:Point>
+                              <av:Size x:Key="ShapeSize">216,66</av:Size>
+                              <av:PointCollection x:Key="ConnectorLocation">230,443 230,515.5</av:PointCollection>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Sequence DisplayName="ZROP Sequence" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                            <Sequence.Variables>
+                              <Variable x:TypeArguments="ui:GenericValue" Name="previousText" />
+                            </Sequence.Variables>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Postion" FormattedText="False" sap:VirtualizedContainerService.HintSize="330,134" sap2010:WorkflowViewState.IdRef="ClickText_15" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Position...">
+                              <ui:ClickText.CursorPosition>
+                                <ui:CursorPosition OffsetX="0" OffsetY="0" Position="Center" />
+                              </ui:ClickText.CursorPosition>
+                              <ui:ClickText.Target>
+                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e98ec7f7a627a5fce6f8e8e9b70b90db" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Overview' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                              </ui:ClickText.Target>
+                            </ui:ClickText>
+                            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Operation code" EmptyField="True" sap:VirtualizedContainerService.HintSize="330,134" sap2010:WorkflowViewState.IdRef="TypeInto_18" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString + &quot;[k(enter)]&quot;]">
+                              <ui:TypeInto.Target>
+                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="3ba55075449e1403852cbd7107a98e74" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='Another entry' /&gt;&lt;wnd ctrlid='101' /&gt;" WaitForReady="INTERACTIVE" />
+                              </ui:TypeInto.Target>
+                            </ui:TypeInto>
+                            <TryCatch DisplayName="Try to click on operation code to process" sap:VirtualizedContainerService.HintSize="330,51" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <TryCatch.Try>
+                                <Sequence DisplayName="Find, Edit, and Save operation" sap:VirtualizedContainerService.HintSize="625,66" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_DOUBLE" DisplayName="Click operation" FormattedText="False" sap:VirtualizedContainerService.HintSize="587,134" sap2010:WorkflowViewState.IdRef="ClickText_16" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="[in_TransactionItem.SpecificContent(&quot;Operation&quot;).ToString]">
+                                    <ui:ClickText.CursorPosition>
+                                      <ui:CursorPosition OffsetX="0" OffsetY="0" Position="Center" />
+                                    </ui:ClickText.CursorPosition>
+                                    <ui:ClickText.Target>
+                                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="2ad1f0da2cfecb999ea0c254020e8b35" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Overview' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                                    </ui:ClickText.Target>
+                                  </ui:ClickText>
+                                  <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" DisplayName="Attach Window 'Change View &quot;FI Reporting Parameters&quot;: Details'" sap:VirtualizedContainerService.HintSize="587,212" sap2010:WorkflowViewState.IdRef="WindowScope_5" InformativeScreenshot="9b8b18c8d1e402ad16fa1ea1439e7680" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Details' /&gt;">
+                                    <ui:WindowScope.Body>
+                                      <ActivityAction x:TypeArguments="x:Object">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+                                        </ActivityAction.Argument>
+                                        <Sequence DisplayName="Get previous text" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_34">
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <Sequence DisplayName="Find relative image" sap:VirtualizedContainerService.HintSize="336,292" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <ui:WaitImageAppear FoundElement="{x:Null}" DisplayName="Find Image 'Contract Type'" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="WaitImageAppear_6">
+                                              <ui:WaitImageAppear.Image>
+                                                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFMAAAAPCAYAAACY/vOMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALnSURBVFhH7Vc7buMwENWhAiPQXVwYMHQQdwFS6BQuA7jRGdKmceMLZOtUqbjz5kPNkJQ28naBH0DAepwh50+4S4o/X995GR7cNo6D+Uk/bBke3HauW9t8cNu4HEzD+8tz6rour368BQXDz7hbOu2e0+njHt0l7prPNFRytzE9OR/iOqZzOK91x30cB9MggfSXTWm/e03vTgEoDwHa3A8cJ2zj5EzKseNWdCmwfTewT6tyiv/h8gP0+XVJ+27FcTbKsuvkUAUU8NPB9np2VJw2ThcS8/HK8uMAbkin1U64prGf97rdkZLrvpmTZBuCzQBXqRSIcDc+c//m5KYhdf2YbfO+WFd5XdmrYzU/QDiILp14qzSqMODtyJejOERP9hgwTB2UYFhwVZfkkZSBLsocLQY7LkaCmxBwEoxysKV0UhDlBOZXaG3Yf7hkOdzDvqkvsA3gTnXJgtzTy1Xu8DHAN635AWpsYjG0+uZ2n9JgWYMBtAc9wL7FgIbjqHBUgX7nOwhxLOCOVntunMMazFgk6ELjaJRZ5ZIsbJtjIN0qI8XJ0QoxUG5+gFBRS7MFgXYZEofmbAYDQnAbjleJAdVr60j7sPFVewpiwAV8byWnHOwjvxA4L4cqw0jh6rMqrRJ94YBxZ3FSzMbZVu+be4AQ+YWM80E+u26+lgaE4DYc12DnxHASLWhuLOid4A18vp4p1WKcLEPgYF+rSDipmMHOPuZcooOur+b2ve4B+s6veQgaHy4PQZ5zWqnsT8sAF9wzDXObQayrwdRY1JWRW0cfMFVmXV2oqmyLLkPFwb6cLC+n5ztbykRzx6htWFbN9n0+xOBW/4Biy7mHhY0y3h1SVloruKYHnuTDWOCM634/5EphXZIKrzk5xvC2+GDonaIrWK7whUTbuXp29oMh4y3vF4meH6CssGDUr+MwD4tZWiValuFf3PwAKfym4Tdy3IFUWZ7jLvLzH5wiyClKzj1A9xlleHAp/QUr9tVt16MKCQAAAABJRU5ErkJggg==" />
+                                              </ui:WaitImageAppear.Image>
+                                              <ui:WaitImageAppear.Target>
+                                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Details' /&gt;" WaitForReady="INTERACTIVE" />
+                                              </ui:WaitImageAppear.Target>
+                                            </ui:WaitImageAppear>
+                                            <ui:SetClippingRegion Element="{x:Null}" Region="{x:Null}" Direction="TRANSLATE" DisplayName="Translate clipping region" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="SetClippingRegion_6">
+                                              <ui:SetClippingRegion.Size>
+                                                <ui:Region Rectangle="-145, 6, 223, -3" />
+                                              </ui:SetClippingRegion.Size>
+                                            </ui:SetClippingRegion>
+                                          </Sequence>
+                                          <ui:GetVisibleText WordsInfo="{x:Null}" DisplayName="Get Visible Text of current contract type" FormattedText="False" sap:VirtualizedContainerService.HintSize="336,106" sap2010:WorkflowViewState.IdRef="GetVisibleText_6">
+                                            <ui:GetVisibleText.Target>
+                                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="39826c1e066a4d99aa2968ae63a6476a" WaitForReady="INTERACTIVE" />
+                                            </ui:GetVisibleText.Target>
+                                            <ui:GetVisibleText.Text>
+                                              <OutArgument x:TypeArguments="ui:GenericValue">[previousText]</OutArgument>
+                                            </ui:GetVisibleText.Text>
+                                          </ui:GetVisibleText>
+                                        </Sequence>
+                                      </ActivityAction>
+                                    </ui:WindowScope.Body>
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                  </ui:WindowScope>
+                                  <If sap2010:Annotation.AnnotationText="If the current contract type is the same as the contract type that is indicated as the contract type, there is no need to change this information. Bot will choose to do nothing if information is the same. Else it will update and save the information to the updated contract type." Condition="[previousText.Contains(in_TransactionItem.SpecificContent(&quot;CTTYP&quot;).ToString)]" DisplayName="If current is same as updated" sap:VirtualizedContainerService.HintSize="587,271" sap2010:WorkflowViewState.IdRef="If_7">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <If.Then>
+                                      <ui:Comment sap:VirtualizedContainerService.HintSize="330,55" sap2010:WorkflowViewState.IdRef="Comment_4" Text="// Do nothing" />
+                                    </If.Then>
+                                    <If.Else>
+                                      <Sequence DisplayName="Update and Save" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_35">
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Text Contract type" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_17" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Contract Type">
+                                          <ui:ClickText.CursorPosition>
+                                            <ui:CursorPosition OffsetX="73" OffsetY="7" Position="TopRight" />
+                                          </ui:ClickText.CursorPosition>
+                                          <ui:ClickText.Target>
+                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="0c7102bdd58ce3d3ca93e1d9a809d6ba" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                          </ui:ClickText.Target>
+                                        </ui:ClickText>
+                                        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Contract Type" EmptyField="True" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="TypeInto_19" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;CTTYP&quot;).ToString + &quot;[k(enter)]&quot;]">
+                                          <ui:TypeInto.Target>
+                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="b5fd2b218474bef8f763ae9e282badd1" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                          </ui:TypeInto.Target>
+                                        </ui:TypeInto>
+                                        <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Save" EmptyField="False" sap:VirtualizedContainerService.HintSize="314,154" sap2010:WorkflowViewState.IdRef="SendHotkey_15" Key="s" KeyModifiers="Ctrl" SendWindowMessages="False" SpecialKey="False">
+                                          <ui:SendHotkey.Target>
+                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="559b608c2743c491fe5137c597caca8c" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Change View &amp;quot;FI Reporting Parameters&amp;quot;: Details' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+                                          </ui:SendHotkey.Target>
+                                        </ui:SendHotkey>
+                                      </Sequence>
+                                    </If.Else>
+                                  </If>
+                                </Sequence>
+                              </TryCatch.Try>
+                              <TryCatch.Catches>
+                                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,340" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <ActivityAction x:TypeArguments="s:Exception">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                    </ActivityAction.Argument>
+                                    <Sequence sap2010:Annotation.AnnotationText="This operation or profit center could cannot and should not continue to be processed if it does not exist." DisplayName="Stop processing" sap:VirtualizedContainerService.HintSize="296,271" sap2010:WorkflowViewState.IdRef="Sequence_60">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <Assign sap:VirtualizedContainerService.HintSize="258,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Boolean">[keepProcessing]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                        </Assign.Value>
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                      </Assign>
+                                      <Throw DisplayName="Throw BusinessRuleException with message" Exception="[new BusinessRuleException(&quot;Operation not found for transaction &quot; + in_TransactionItem.Reference +&quot;. Action Required.&quot;)]" sap:VirtualizedContainerService.HintSize="258,22" sap2010:WorkflowViewState.IdRef="Throw_11" />
+                                    </Sequence>
+                                  </ActivityAction>
+                                </Catch>
+                              </TryCatch.Catches>
+                            </TryCatch>
+                          </Sequence>
+                          <FlowStep.Next>
+                            <x:Reference>__ReferenceID1</x:Reference>
+                          </FlowStep.Next>
+                        </FlowStep>
+                      </FlowDecision.True>
+                    </FlowDecision>
+                  </FlowDecision.False>
+                </FlowDecision>
+              </FlowDecision.False>
+            </FlowDecision>
+          </FlowDecision.False>
+        </FlowDecision>
+        <x:Reference>__ReferenceID2</x:Reference>
+        <x:Reference>__ReferenceID3</x:Reference>
+        <x:Reference>__ReferenceID4</x:Reference>
+        <x:Reference>__ReferenceID5</x:Reference>
+        <x:Reference>__ReferenceID6</x:Reference>
+        <x:Reference>__ReferenceID7</x:Reference>
+        <FlowStep x:Name="__ReferenceID10">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <av:Point x:Key="ShapeLocation">120,14.5</av:Point>
+              <av:Size x:Key="ShapeSize">216,66</av:Size>
+              <av:PointCollection x:Key="ConnectorLocation">336,47.5 372.5,47.5 372.5,66.5</av:PointCollection>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="Enter transaction code" sap:VirtualizedContainerService.HintSize="216,66" sap2010:WorkflowViewState.IdRef="Sequence_11">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <TryCatch DisplayName="Tries to find 'SAP Easy Access' to properly type in Tcode" sap:VirtualizedContainerService.HintSize="430,651" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <TryCatch.Try>
+                <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Easy Access Fast Path code" FormattedText="False" sap:VirtualizedContainerService.HintSize="330,134" sap2010:WorkflowViewState.IdRef="ClickText_18" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="SAP Easy Access">
+                  <ui:ClickText.CursorPosition>
+                    <ui:CursorPosition OffsetX="-8" OffsetY="-33" Position="Center" />
+                  </ui:ClickText.CursorPosition>
+                  <ui:ClickText.Target>
+                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="84ece781694d9a3de96280c305a2a427" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                  </ui:ClickText.Target>
+                </ui:ClickText>
+              </TryCatch.Try>
+              <TryCatch.Catches>
+                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,489" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ActivityAction x:TypeArguments="s:Exception">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Goes back via hotkey if not on easy access page" sap:VirtualizedContainerService.HintSize="368,420" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Go Back to Easy Access Page" EmptyField="False" sap:VirtualizedContainerService.HintSize="330,154" sap2010:WorkflowViewState.IdRef="SendHotkey_20" Key="f3" KeyModifiers="Shift" SendWindowMessages="False" SpecialKey="True">
+                        <ui:SendHotkey.Target>
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="b8a6ac1cc94ecdb67a8be78634daa2c8" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' omit:title='Change Profit Center' /&gt;" WaitForReady="INTERACTIVE" />
+                        </ui:SendHotkey.Target>
+                      </ui:SendHotkey>
+                      <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Clicks on type field above 'SAP Easy Access' to type in Tcode" FormattedText="False" sap:VirtualizedContainerService.HintSize="330,134" sap2010:WorkflowViewState.IdRef="ClickText_19" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="SAP Easy Access">
+                        <ui:ClickText.CursorPosition>
+                          <ui:CursorPosition OffsetX="-8" OffsetY="-33" Position="Center" />
+                        </ui:ClickText.CursorPosition>
+                        <ui:ClickText.Target>
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="84ece781694d9a3de96280c305a2a427" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' /&gt;" WaitForReady="INTERACTIVE" />
+                        </ui:ClickText.Target>
+                      </ui:ClickText>
+                    </Sequence>
+                  </ActivityAction>
+                </Catch>
+              </TryCatch.Catches>
+            </TryCatch>
+            <ui:Callout Content="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString]" DisplayName="Notifies agent/analyst what Tcode is about to be typed in" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="Callout_1" Timer="1000" Title="Transaction Code">
+              <ui:Callout.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="29fd621163b346a3f93bf93261768ab6" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' omit:title='SAP Easy Access' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:Callout.Target>
+            </ui:Callout>
+            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type transaction code" EmptyField="True" sap:VirtualizedContainerService.HintSize="330,134" sap2010:WorkflowViewState.IdRef="TypeInto_20" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.SpecificContent(&quot;TransactionCode&quot;).ToString + &quot;[k(enter)]&quot;]">
+              <ui:TypeInto.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="786b3e5b9429b62df0b898afa748efa1" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP Easy Access' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:TypeInto.Target>
+            </ui:TypeInto>
+          </Sequence>
+          <FlowStep.Next>
+            <x:Reference>__ReferenceID8</x:Reference>
+          </FlowStep.Next>
+        </FlowStep>
+        <x:Reference>__ReferenceID1</x:Reference>
+        <x:Reference>__ReferenceID9</x:Reference>
+      </Flowchart>
+    </While>
+  </Sequence>
+</Activity>

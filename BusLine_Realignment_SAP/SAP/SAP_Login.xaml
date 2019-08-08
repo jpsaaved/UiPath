@@ -1,0 +1,167 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="SAPLogin" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Credential" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>398,1078</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>SAPLogin_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="22">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Security</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Logs into SAP.&#xA;Precondition: SAP is opened&#xA;Post-Action:&#xA;Logon screen open" DisplayName="SAPLogin" sap:VirtualizedContainerService.HintSize="358,998" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="user" />
+      <Variable x:TypeArguments="ss:SecureString" Name="password" />
+      <Variable x:TypeArguments="x:String" Name="newPass" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:InputDialog Options="{x:Null}" DisplayName="SAP - User" sap:VirtualizedContainerService.HintSize="336,92" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="[&quot;Please enter your SAP login credentials.&quot;+ Environment.NewLine+ &quot;(This information will not be shared or seen by human eyes. All passwords are immediately encrypted and only stored for the duration of this bot session.)&quot;+ Environment.NewLine + Environment.NewLine + &quot;User:&quot;]" Title="SAP Login Credentials - User">
+      <ui:InputDialog.Result>
+        <OutArgument x:TypeArguments="x:String">[user]</OutArgument>
+      </ui:InputDialog.Result>
+    </ui:InputDialog>
+    <ui:InputDialog Options="{x:Null}" DisplayName="SAP - Password" sap:VirtualizedContainerService.HintSize="336,92" sap2010:WorkflowViewState.IdRef="InputDialog_2" IsPassword="True" Label="[&quot;Please enter your SAP login credentials.&quot;+ Environment.NewLine+ &quot;(This information will not be shared or seen by human eyes. All passwords are immediately encrypted and only stored for the duration of this bot session.)&quot;+ Environment.NewLine + Environment.NewLine + &quot;Password:&quot;]" Title="SAP Login Credentials - Password">
+      <ui:InputDialog.Result>
+        <OutArgument x:TypeArguments="x:String">[newPass]</OutArgument>
+      </ui:InputDialog.Result>
+    </ui:InputDialog>
+    <ui:SetCredential TimeoutMS="{x:Null}" CredentialName="[in_Credential]" DisplayName="Set Credential" sap:VirtualizedContainerService.HintSize="336,22" sap2010:WorkflowViewState.IdRef="SetCredential_1" Password="[newPass]" UserName="[user]" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Get SAP Credentials" sap:VirtualizedContainerService.HintSize="336,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Framework\GetAppCredentials.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Username">[user]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Credential">[in_Credential]</InArgument>
+        <OutArgument x:TypeArguments="ss:SecureString" x:Key="out_Password">[password]</OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <Sequence DisplayName="Logon to SAP" sap:VirtualizedContainerService.HintSize="336,349" sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_DOUBLE" DisplayName="Click Text QA2 server" FormattedText="False" sap:VirtualizedContainerService.HintSize="314,134" sap2010:WorkflowViewState.IdRef="ClickText_1" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="QA2">
+        <ui:ClickText.CursorPosition>
+          <ui:CursorPosition OffsetX="0" OffsetY="0" Position="TopLeft" />
+        </ui:ClickText.CursorPosition>
+        <ui:ClickText.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="c261261eb97d294299bf86f35ff13fff" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='SAP Logon 750' /&gt;&lt;wnd ctrlid='5003' title='myContainer' /&gt;&lt;wnd ctrlid='1008' /&gt;" WaitForReady="INTERACTIVE" />
+        </ui:ClickText.Target>
+      </ui:ClickText>
+      <Sequence DisplayName="Enter login credentials" sap:VirtualizedContainerService.HintSize="486,1576" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="wrongUserInfo" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click User field" FormattedText="False" sap:VirtualizedContainerService.HintSize="464,134" sap2010:WorkflowViewState.IdRef="ClickText_2" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="User">
+          <ui:ClickText.CursorPosition>
+            <ui:CursorPosition OffsetX="129" OffsetY="7" Position="TopRight" />
+          </ui:ClickText.CursorPosition>
+          <ui:ClickText.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="8681e438bfc3a66edea0f041430b820e" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:ClickText.Target>
+        </ui:ClickText>
+        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type username" EmptyField="True" sap:VirtualizedContainerService.HintSize="464,134" sap2010:WorkflowViewState.IdRef="TypeInto_1" SendWindowMessages="False" SimulateType="False" Text="[user]">
+          <ui:TypeInto.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="0e44e3f461b0bce7d50add531dcc3eb0" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:TypeInto.Target>
+        </ui:TypeInto>
+        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click password field" FormattedText="False" sap:VirtualizedContainerService.HintSize="464,134" sap2010:WorkflowViewState.IdRef="ClickText_3" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Password">
+          <ui:ClickText.CursorPosition>
+            <ui:CursorPosition OffsetX="97" OffsetY="6" Position="TopRight" />
+          </ui:ClickText.CursorPosition>
+          <ui:ClickText.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="64955ee7afaa7213640b8d672d00e855" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:ClickText.Target>
+        </ui:ClickText>
+        <ui:TypeSecureText DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type password" EmptyField="False" sap:VirtualizedContainerService.HintSize="464,106" sap2010:WorkflowViewState.IdRef="TypeSecureText_1" SecureText="[password]" SendWindowMessages="False" SimulateType="False">
+          <ui:TypeSecureText.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="da44f65d5940d377c8507e79c169920a" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&#xA;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:TypeSecureText.Target>
+        </ui:TypeSecureText>
+        <ui:ClickText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click password field" FormattedText="False" sap:VirtualizedContainerService.HintSize="464,134" sap2010:WorkflowViewState.IdRef="ClickText_7" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="False" Text="Password">
+          <ui:ClickText.CursorPosition>
+            <ui:CursorPosition OffsetX="97" OffsetY="6" Position="TopRight" />
+          </ui:ClickText.CursorPosition>
+          <ui:ClickText.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="64955ee7afaa7213640b8d672d00e855" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:ClickText.Target>
+        </ui:ClickText>
+        <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Submit login credentials" EmptyField="False" sap:VirtualizedContainerService.HintSize="464,154" sap2010:WorkflowViewState.IdRef="SendHotkey_4" Key="enter" KeyModifiers="None" SendWindowMessages="False" SpecialKey="True">
+          <ui:SendHotkey.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="0e44e3f461b0bce7d50add531dcc3eb0" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd cls='Afx:*' idx='5' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:SendHotkey.Target>
+        </ui:SendHotkey>
+        <ui:UiElementExists DisplayName="Element Exists 'Afx:02120000:8:00010003...'" Exists="[wrongUserInfo]" sap:VirtualizedContainerService.HintSize="464,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+          <ui:UiElementExists.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="e266c652ecabee2d33d90ba914a854f0" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;wnd aaname='Name or password is incorrect (repeat logon)' cls='Afx:*' /&gt;" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+          </ui:UiElementExists.Target>
+        </ui:UiElementExists>
+        <If Condition="[wrongUserInfo]" sap:VirtualizedContainerService.HintSize="464,208" sap2010:WorkflowViewState.IdRef="If_1">
+          <If.Then>
+            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" Buttons="Ok" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[&quot;Incorrect user info. Please manually log in using you correct user and password. Once logged in, click 'OK'&quot;]" TopMost="True" />
+          </If.Then>
+        </If>
+        <ui:SetCredential TimeoutMS="{x:Null}" CredentialName="[in_Credential]" DisplayName="Set Credential" sap:VirtualizedContainerService.HintSize="464,22" sap2010:WorkflowViewState.IdRef="SetCredential_2" Password="null" UserName="null" />
+      </Sequence>
+    </Sequence>
+  </Sequence>
+</Activity>
